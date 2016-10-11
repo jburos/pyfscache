@@ -141,7 +141,7 @@ class FSCache(object):
       self._lifetime = to_seconds(**kwargs)
       if self._lifetime <= 0:
         msg = "Lifetime (%s seconds) is 0 or less." % self._lifetime
-        raise LifetimeError, msg
+        raise LifetimeError(msg)
     else:
       self._lifetime = None
     self._loaded = {}
@@ -174,7 +174,7 @@ class FSCache(object):
       tmplt = ("Object for key `%s` exists\n." +
                "Remove the old one before setting the new object.")
       msg = tmplt % str(k)
-      raise CacheError, msg
+      raise CacheError(msg)
     else:
       expiry = self.expiry()
       contents = CacheObject(v, expiration=expiry)
@@ -193,7 +193,7 @@ class FSCache(object):
       del(self._loaded[digest])
     else:
       msg = "Object for key `%s` has not been loaded" % str(k)
-      raise CacheError, msg
+      raise CacheError(msg)
   def __contains__(self, k):
     """
     Returns ``True`` if an object keyed by `k` is
@@ -247,7 +247,7 @@ class FSCache(object):
       contents = load(path)
     else:
       msg = "Object for key `%s` does not exist." % (k,)
-      raise CacheError, msg
+      raise CacheError(msg)
     self._loaded[digest] = contents
     return contents
   def _remove(self, k):
@@ -263,7 +263,7 @@ class FSCache(object):
       os.remove(path)
     else:
       msg = "No object for key `%s` stored." % str(k)
-      raise CacheError, msg
+      raise CacheError(msg)
   def is_loaded(self, k):
     """
     Returns ``True`` if the item keyed by `k` has been loaded,
