@@ -385,7 +385,7 @@ def make_digest(k):
   """
   s = pickle.dumps(k)
   h = hashlib.sha256(s).digest()
-  b64 = base64.urlsafe_b64encode(h)[:-2]
+  b64 = base64.urlsafe_b64encode(h).decode()[:-2]
   return b64.replace('-', '=')
 
 def load(filename):
