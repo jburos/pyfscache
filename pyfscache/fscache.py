@@ -2,7 +2,10 @@
 
 import os
 import hashlib
-import cPickle
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
 import time
 import base64
 import inspect
@@ -380,7 +383,7 @@ def make_digest(k):
   >>> make_digest(adict)
   'a2VKynHgDrUIm17r6BQ5QcA5XVmqpNBmiKbZ9kTu0A'
   """
-  s = cPickle.dumps(k)
+  s = pickle.dumps(k)
   h = hashlib.sha256(s).digest()
   b64 = base64.urlsafe_b64encode(h)[:-2]
   return b64.replace('-', '=')
@@ -391,7 +394,7 @@ def load(filename):
   from the file named by `filename`.
   """
   f = open(filename, 'rb')
-  obj = cPickle.load(f)
+  obj = pickle.load(f)
   f.close()
   return obj
 
@@ -401,7 +404,7 @@ def dump(obj, filename):
   into the file named by `filename`.
   """
   f = open(filename, 'wb')
-  cPickle.dump(obj, f, cPickle.HIGHEST_PROTOCOL)
+  pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
   f.close()
 
 def auto_cache_function(f, cache):
@@ -410,7 +413,7 @@ def auto_cache_function(f, cache):
   The `cache` can be any mapping object, such as `FSCache` objects.
 
   The function arguments are expected to be well-behaved
-  for python's :py:mod:`cPickle`. Or, in other words, 
+  for python's :py:mod:`pickle`. Or, in other words, 
   the expected values for the parameters (the arguments) should
   be instances new-style classes (i.e. inheriting from
   :class:`object`) or implement :func:`__getstate__` with
@@ -441,7 +444,7 @@ def cache_function(f, keyer, cache):
   `keyer` and caches the result in `cache`.
 
   The keys created by `keyer` should be well behaved for
-  python's :py:mod:`cPickle`. See the documentation for
+  python's :py:mod:`pickle`. See the documentation for
   :func:`auto_cache_funtion` for details.
 
   It is best to have a unique `keyer` for every function.
