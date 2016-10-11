@@ -1,6 +1,9 @@
 from unittest import TestSuite
 
-import test_fscache
+try:
+    import test_fscache
+except ImportError:
+    from . import test_fscache
 
 def test_suite():
   suite = TestSuite()
